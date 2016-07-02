@@ -2,13 +2,13 @@
 
 namespace Etmp;
 
-use Etmp\Controller\ControllerInterface;
-use Etmp\Controller\Help;
+use Etmp\Controllers\Controller;
+use Etmp\Controllers\Help;
 
 class Router {
     private $routes = [
         'help' => Help::class,
-        'job'  => JobController::class
+        'job'  => Job::class,
     ];
     
     private $route;
@@ -29,7 +29,7 @@ class Router {
         return true;
     }
     
-    public function getController(): ControllerInterface
+    public function getController(): Controller
     {
         return new $this->routes[$this->route];
     }

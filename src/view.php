@@ -2,15 +2,18 @@
 
 namespace Etmp;
 
+use Etmp\Message;
+
 class View {
-    private $message, $type;
+    private $message;
+    private $type;
     
-    public function setMessage(string $message)
+    public function setMessage(Message $message)
     {
         $this->message = $message;
     }
     
-    public function setType(int $type): void
+    public function setType(integer $type): void
     {
         $this->type = $type;
     }

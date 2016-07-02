@@ -8,12 +8,10 @@ abstract class Bootstrap {
         global $argv;
         $router = new Router($argv);
         
-        var_dump($router->find());
-        
         if ($router->find()) {
             $controller = $router->getController();
             
-            echo $controller->run();
+            echo $controller->dispatch();
         }
     }
 }
