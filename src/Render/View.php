@@ -1,8 +1,6 @@
 <?php
 
-namespace Etmp;
-
-use Etmp\Message;
+namespace Etmp\Render;
 
 class View {
     private $message;

@@ -1,11 +1,12 @@
 <?php
 
-namespace Etmp\Controllers;
+namespace Etmp\Help;
 
-use Etmp\View;
-use Etmp\Message;
+use Etmp\Foundation\Controller;
+use Etmp\Render\View;
+use Etmp\Render\Message;
 
-class Help implements Controller {    
+class HelpController implements Controller {    
     private function addHeader(Message $message)
     {
         $message

@@ -1,0 +1,5 @@
+<?php
+
+return [
+    'fetchAdressUrl' => 'http://ipecho.net/plain',
+];

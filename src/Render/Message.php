@@ -1,6 +1,8 @@
 <?php
 
-namespace Etmp;
+namespace Etmp\Render;
+
+use Etmp\Render\Color;
 
 class Message {
     private $sections;
@@ -11,12 +13,13 @@ class Message {
         $this->sections = [];
     }
     
-    public function section(string $header = ''): Message
+    public function section(string $header = null, int $color = Color::Default): Message
     {
         $this->selectedSection = sizeof($this->sections);
 
         $this->sections[] = [
-            'header' => $header
+            'header' => $header,
+            'headerColor' => $color,
         ];
         
         return $this;
@@ -34,7 +37,7 @@ class Message {
         $text = '';
         
         foreach ($this->sections as $section) {
-            $text .= "\n\n" . $section['header'];
+            $text .= "\n" . Colorize::format($section['header'], $section['headerColor']);
             
             if (isset($section['description'])) {
                 if (is_string($section['description'])) {
@@ -49,6 +52,8 @@ class Message {
                     }
                 }
             }
+
+            $text .= "\n";
         }
         
         return $text . "\n";

@@ -1,8 +1,8 @@
 <?php
 
-$argv = [
+/*$argv = [
     'help'
-];
+];*/
 
 require_once ('autoloader.php');
 

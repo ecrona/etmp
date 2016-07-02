@@ -1,8 +1,8 @@
 <?php
 
-namespace Etmp\Controllers;
+namespace Etmp\Foundation;
 
-use Etmp\View;
+use Etmp\Render\View;
 
 interface Controller {
     public function dispatch(): View;
