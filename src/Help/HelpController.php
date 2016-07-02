@@ -3,7 +3,6 @@
 namespace Etmp\Help;
 
 use Etmp\Foundation\Controller;
-use Etmp\Render\View;
 use Etmp\Render\Message;
 
 class HelpController implements Controller {    
@@ -34,16 +33,13 @@ class HelpController implements Controller {
             ]);
     }
     
-    public function dispatch(): View
+    public function dispatch(): Message
     {
-        $view = new View();
         $message = new Message();
         $this->addHeader($message);
         $this->addActions($message);
         $this->addOptions($message);
         
-        $view->setMessage($message);
-        
-        return $view;
+        return $message;
     }
 }

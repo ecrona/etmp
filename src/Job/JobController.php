@@ -5,7 +5,6 @@ namespace Etmp\Job;
 use Etmp\Foundation\Controller;
 use Etmp\Foundation\Config;
 use Etmp\Render\Message;
-use Etmp\Render\View;
 use Exception;
 
 class JobController implements Controller {
@@ -32,9 +31,8 @@ class JobController implements Controller {
         echo $exception;
     }
     
-    public function dispatch(): View
+    public function dispatch(): Message
     {
-        $view    = new View();
         $message = new Message();
 
         try {
@@ -43,9 +41,7 @@ class JobController implements Controller {
         } catch(Exception $exception) {
            	$this->log($exception);
         }
-
-        $view->setMessage($message);
         
-        return $view;
+        return $message;
     }
 }

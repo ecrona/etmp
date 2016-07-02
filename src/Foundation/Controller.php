@@ -2,8 +2,8 @@
 
 namespace Etmp\Foundation;
 
-use Etmp\Render\View;
+use Etmp\Render\Message;
 
 interface Controller {
-    public function dispatch(): View;
+    public function dispatch(): Message;
 }
