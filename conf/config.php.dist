@@ -2,4 +2,7 @@
 
 return [
     'fetchAdressUrl' => 'http://ipecho.net/plain',
+    'noIpUsername'   => '',
+    'noIpPassword'   => '',
+    'noIpHostname'   => '',
 ];
