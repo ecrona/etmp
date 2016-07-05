@@ -5,15 +5,18 @@ namespace Etmp\Job;
 use Etmp\Foundation\Controller;
 use Etmp\Foundation\Config;
 use Etmp\Render\Message;
+use Etmp\Storage;
 use Exception;
+use DateTime;
 
 class JobController implements Controller {
     private $curlUrl = 'https://dynupdate.no-ip.com/nic/update?hostname=%s&myip=%s';
     private $config, $storage;
     
-    public function __construct(Config $config)
+    public function __construct(Config $config, Storage\Adapter $storage)
     {
-        $this->config = $config;
+        $this->config  = $config;
+        $this->storage = $storage;
     }
 
     private function fetchAdress()
@@ -47,6 +50,11 @@ class JobController implements Controller {
         return (string) $curl;
     }
 
+    private function storeAdress($adress)
+    {
+        $this->storage->insert('adress', new DateTime(), $adress);
+    }
+
     private function log(Exception $exception)
     {
         echo $exception;
@@ -57,8 +65,10 @@ class JobController implements Controller {
         $message = new Message();
 
         try {
+            $this->storage->setup();
             $adress   = $this->fetchAdress();
             $response = $this->setAdress($adress);
+            $this->storeAdress($adress);
             $message->section('IP Adress is: ' . $adress . ' - ' . $response);
         } catch(Exception $exception) {
            	$this->log($exception);

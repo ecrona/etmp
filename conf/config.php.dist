@@ -1,8 +1,10 @@
 <?php
 
 return [
-    'fetchAdressUrl' => 'http://ipecho.net/plain',
-    'noIpUsername'   => '',
-    'noIpPassword'   => '',
-    'noIpHostname'   => '',
+    'fetchAdressUrl'   => 'http://ipecho.net/plain',
+    'noIpUsername'     => '',
+    'noIpPassword'     => '',
+    'noIpHostname'     => '',
+    'storageAdapter'   => 'FileSystem',
+    'storageDirectory' => 'storage',
 ];

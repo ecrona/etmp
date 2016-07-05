@@ -1,2 +1,3 @@
-conf/*
-!conf/*.dist
+/conf/*
+/!conf/*.dist
+/storage
