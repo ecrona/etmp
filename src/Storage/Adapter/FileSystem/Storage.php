@@ -18,19 +18,14 @@ class Storage implements Adapter {
         $this->dir = $config['storageDirectory'];
     }
 
-    private function formatFileName(string $table, $date): string
-    {
-        return $this->dir . '/' . $table . '/' . $date->format('Ymd');
-    }
-
     private function write(string $file, $value, string $mode)
     {
         if (is_array($value)) {
-            $value = explode("\t", $value);
+            $value = implode("\t", $value);
         }
 
         $handle = fopen($file, $mode);
-        fwrite($handle, $value);
+        fwrite($handle, trim($value) . "\n");
         fclose($handle);
     }
 
@@ -49,9 +44,13 @@ class Storage implements Adapter {
         }
     }
 
-    public function append(string $table, $date, $value)
+    public function append(string $table, $date, $value, array $metadata = array())
     {
-        $file = $this->formatFileName($table, $date);
+        $file = $this->dir . '/' . $table . '/' . $date->format('Ymd');
+
+        if (!empty($metadata)) {
+            $value = array_merge($metadata, array($value));
+        }
 
         $this->write($file, $value, 'a');
     }

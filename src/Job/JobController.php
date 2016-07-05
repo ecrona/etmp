@@ -6,17 +6,24 @@ use Etmp\Foundation\Controller;
 use Etmp\Foundation\Config;
 use Etmp\Render\Message;
 use Etmp\Storage;
+use Etmp\Log\Logger;
 use Exception;
 use DateTime;
 
 class JobController implements Controller {
     private $curlUrl = 'https://dynupdate.no-ip.com/nic/update?hostname=%s&myip=%s';
-    private $config, $storage;
+    private $config;
+    private $storage;
+    private $logger;
     
-    public function __construct(Config $config, Storage\Adapter $storage)
-    {
+    public function __construct(
+        Config $config,
+        Storage\Adapter $storage,
+        Logger $logger
+    ) {
         $this->config  = $config;
         $this->storage = $storage;
+        $this->logger  = $logger;
     }
 
     private function fetchAdress()
@@ -24,7 +31,7 @@ class JobController implements Controller {
         $adress = @file_get_contents($this->config['fetchAdressUrl']);
 
         if ($adress === false) {
-            throw new Exception('Could not fetch adress.');
+            throw new Exception('Could not fetch adress');
         }
 
         return $adress;
@@ -54,11 +61,6 @@ class JobController implements Controller {
     {
         $this->storage->insert('adress', new DateTime(), $adress);
     }
-
-    private function log(Exception $exception)
-    {
-        echo $exception;
-    }
     
     public function dispatch(): Message
     {
@@ -66,14 +68,16 @@ class JobController implements Controller {
 
         try {
             $this->storage->setup();
+
             $adress   = $this->fetchAdress();
             $response = $this->setAdress($adress);
+
             $this->storeAdress($adress);
-            $message->section('IP Adress is: ' . $adress . ' - ' . $response);
+            $this->logger->info($response);
         } catch(Exception $exception) {
-           	$this->log($exception);
+            $this->logger->critical($exception->getMessage());
         }
-        
+
         return $message;
     }
 }
