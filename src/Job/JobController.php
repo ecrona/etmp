@@ -26,7 +26,7 @@ class JobController implements Controller {
         $this->logger  = $logger;
     }
 
-    private function fetchAdress()
+    private function fetchAdress(): string
     {
         $adress = @file_get_contents($this->config['fetchAdressUrl']);
 
@@ -68,12 +68,16 @@ class JobController implements Controller {
 
         try {
             $this->storage->setup();
+            $this->storage->clean('logs');
+            $adress = $this->fetchAdress();
 
-            $adress   = $this->fetchAdress();
-            $response = $this->setAdress($adress);
-
-            $this->storeAdress($adress);
-            $this->logger->info($response);
+            if ($adress !== $this->storage->read('adress')) {
+                $response = $this->setAdress($adress);
+                $this->storeAdress($adress);
+                $this->logger->info($response);
+            } else {
+                $this->logger->info('No adress change');
+            }
         } catch(Exception $exception) {
             $this->logger->critical($exception->getMessage());
         }

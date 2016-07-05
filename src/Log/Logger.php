@@ -68,5 +68,4 @@ class Logger implements LoggerInterface
     {
         $this->storage->append('logs', new DateTime(), $this->interpolate($message), ['level' => $level]);
     }
-
 }

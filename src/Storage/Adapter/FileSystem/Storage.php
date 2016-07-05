@@ -5,6 +5,8 @@ namespace Etmp\Storage\Adapter\FileSystem;
 use Etmp\Foundation\Config;
 use Etmp\Storage\Adapter;
 use Exception;
+use DateTime;
+use DateInterval;
 
 class Storage implements Adapter {
     private $dir;
@@ -44,6 +46,21 @@ class Storage implements Adapter {
         }
     }
 
+    public function read(string $table): string
+    {
+        $file = $this->dir . '/' . $table . '/' . $table;
+
+        if (file_exists($file)) {
+            $handle  = fopen($file, 'r');
+            $content = fread($handle, filesize($file));
+            fclose($handle);
+
+            return trim($content);
+        } else {
+            return '';
+        }
+    }
+
     public function append(string $table, $date, $value, array $metadata = array())
     {
         $file = $this->dir . '/' . $table . '/' . $date->format('Ymd');
@@ -61,5 +78,20 @@ class Storage implements Adapter {
 
         $this->write($dir . '/' . $table, $value, 'w+');
         $this->write($dir . '/date', $date->format('Y-m-d H:i:s'), 'w+');
+    }
+    
+    public function clean(string $table, int $days = 7)
+    {
+        $dir = $this->dir . '/' . $table;
+
+        foreach (scandir($dir) as $file) {
+            if (date_parse($file)['day'] !== false) {
+                $diff = (new DateTime($file))->diff(new DateTime);
+                
+                if ($diff->d >= 7) {
+                    unlink($dir . '/' . $file);
+                }
+            }
+        }
     }
 }
