@@ -68,7 +68,7 @@ class JobController implements Controller {
 
         try {
             $this->storage->setup();
-            $this->storage->clean('logs');
+            $this->storage->clean('logs', $this->config['logPreserveDuration']);
             $adress = $this->fetchAdress();
 
             if ($adress !== $this->storage->read('adress')) {
