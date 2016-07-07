@@ -66,6 +66,14 @@ class Logger implements LoggerInterface
 
     public function log(string $level, string $message, array $context = array())
     {
-        $this->storage->append('logs', new DateTime(), $this->interpolate($message), ['level' => $level]);
+        $date = new DateTime();
+
+        $metadata = [
+            'date'  => $date->format('Y-m-d H:i:s'),
+            'level' => $level,
+        ];
+
+        $this->storage->append('logs', $date, $this->interpolate($message), $metadata);
     }
+
 }
