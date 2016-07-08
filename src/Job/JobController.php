@@ -11,50 +11,31 @@ use Exception;
 use DateTime;
 
 class JobController implements Controller {
-    private $curlUrl = 'https://dynupdate.no-ip.com/nic/update?hostname=%s&myip=%s';
     private $config;
     private $storage;
     private $logger;
+    private $jobService;
     
     public function __construct(
         Config $config,
         Storage\Adapter $storage,
-        Logger $logger
+        Logger $logger,
+        JobService $jobService
     ) {
-        $this->config  = $config;
-        $this->storage = $storage;
-        $this->logger  = $logger;
+        $this->config     = $config;
+        $this->storage    = $storage;
+        $this->logger     = $logger;
+        $this->jobService = $jobService;
     }
 
-    private function fetchAdress(): string
+    private function setAdress($adress): string
     {
-        $adress = @file_get_contents($this->config['fetchAdressUrl']);
-
-        if ($adress === false) {
-            throw new Exception('Could not fetch adress');
-        }
-
-        return $adress;
-    }
-
-    private function setAdress($adress)
-    {
-        $curl = new Curl(sprintf(
-            $this->curlUrl,
+        return $this->jobService->setAdress(
+            $adress,
             $this->config['noIpHostname'],
-            $adress
-        ));
-        
-        $curl->setAuthentication(
             $this->config['noIpUsername'],
             $this->config['noIpPassword']
         );
-
-        if (!$curl->execute()) {
-            throw new Exception($curl);
-        }
-
-        return (string) $curl;
     }
 
     private function storeAdress($adress)
@@ -69,7 +50,7 @@ class JobController implements Controller {
         try {
             $this->storage->setup();
             $this->storage->clean('logs', $this->config['logPreserveDuration']);
-            $adress = $this->fetchAdress();
+            $adress = $this->jobService->fetchAdress($this->config['fetchAdressUrl']);
 
             if ($adress !== $this->storage->read('adress')) {
                 $response = $this->setAdress($adress);

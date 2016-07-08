@@ -7,15 +7,16 @@ use Etmp\Help\HelpController;
 use Etmp\NotFound\NotFoundController;
 use Etmp\Job\JobController;
 use Etmp\Job\JobFactory;
+use Etmp\Verify\VerifyFactory;
 
 class Router {
     private $routes = [
         'help' => HelpController::class,
-        'job'  => JobController::class,
     ];
 
     private $factories = [
-        'job' => JobFactory::class,
+        'job'    => JobFactory::class,
+        'verify' => VerifyFactory::class,
     ];
 
     private $notFoundController = NotFoundController::class;
@@ -35,7 +36,7 @@ class Router {
 
     private function resolveRoute()
     {
-        if (isset($this->routes[$this->route])) {
+        if (isset($this->routes[$this->route]) || isset($this->factories[$this->route])) {
             if (isset($this->factories[$this->route])) {
                 $this->factory = $this->factories[$this->route];
             } else {

@@ -26,23 +26,44 @@ class Storage implements Adapter {
             $value = implode("\t", $value);
         }
 
-        $handle = fopen($file, $mode);
-        fwrite($handle, trim($value) . "\n");
-        fclose($handle);
+        $handle = @fopen($file, $mode);
+        $fwrite = @fwrite($handle, trim($value) . "\n");
+        $fclose = @fclose($handle);
+
+        if ($handle === false
+            || $fwrite === false
+            || $fclose === false
+        ) {
+            throw new Exception('Could handle file `' . $file . '`');
+        }
     }
 
     public function setup()
     {
+        $baseDir = $logDir = $adressDir = $testDir = true;
+
         if (!file_exists($this->dir)) {
-            mkdir($this->dir);
+            $baseDir = @mkdir($this->dir);
         }
 
         if (!file_exists($this->dir . '/logs')) {
-            mkdir($this->dir . '/logs');
+            $logDir = @mkdir($this->dir . '/logs');
         }
 
         if (!file_exists($this->dir . '/adress')) {
-            mkdir($this->dir . '/adress');
+            $adressDir = @mkdir($this->dir . '/adress');
+        }
+
+        if (!file_exists($this->dir . '/test')) {
+            $testDir = @mkdir($this->dir . '/test');
+        }
+
+        if (!$baseDir
+            || !$logDir
+            || !$adressDir
+            || !$testDir
+        ) {
+            throw new Exception('Could not create all setup directories');
         }
     }
 
@@ -51,9 +72,16 @@ class Storage implements Adapter {
         $file = $this->dir . '/' . $table . '/' . $table;
 
         if (file_exists($file)) {
-            $handle  = fopen($file, 'r');
-            $content = fread($handle, filesize($file));
-            fclose($handle);
+            $handle  = @fopen($file, 'r');
+            $content = @fread($handle, filesize($file));
+            $fclose  = @fclose($handle);
+
+            if ($handle === false
+                || $content === false
+                || $fclose === false
+            ) {
+                throw new Exception('Could not read from file `' . $file . '`');
+            }
 
             return trim($content);
         } else {
@@ -88,9 +116,25 @@ class Storage implements Adapter {
             if (date_parse($file)['day'] !== false) {
                 $diff = (new DateTime($file))->diff(new DateTime);
                 
-                if ($diff->d >= 7) {
+                if ($diff->d >= $days) {
                     unlink($dir . '/' . $file);
                 }
+            }
+        }
+    }
+
+    public function truncate(string $table)
+    {
+        $dir = $this->dir . '/' . $table;
+
+        foreach (scandir($dir) as $file) {
+            if ($file === '.' || $file === '..')
+                continue;
+            
+            $unlink = @unlink($dir . '/' . $file);
+
+            if (!$unlink) {
+                throw new Exception('Could not truncate `' . $dir . '/' . $file . '`');
             }
         }
     }

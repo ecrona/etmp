@@ -1,20 +1,19 @@
 <?php
 
-namespace Etmp\Job;
+namespace Etmp\Verify;
 
 use Etmp\Foundation\Config;
 use Etmp\Storage;
-use Etmp\Log\Logger;
+use Etmp\Job;
 
-abstract class JobFactory {
+abstract class VerifyFactory {
     public static function build()
     {
         $config     = new Config('config');
         $storage    = Storage\Locator::getStorage($config);
-        $logger     = new Logger($storage);
-        $jobService = new JobService;
+        $jobService = new Job\JobService;
 
-        $controller = new JobController($config, $storage, $logger, $jobService);
+        $controller = new VerifyController($config, $storage, $jobService);
 
         return $controller;
     }
