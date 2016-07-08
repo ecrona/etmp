@@ -10,8 +10,6 @@ use DateInterval;
 use PDO;
 
 class Storage implements Adapter {
-    private $dir;
-
     public function __construct(Config $config)
     {
         if (!isset($config['storageHost'])) {
