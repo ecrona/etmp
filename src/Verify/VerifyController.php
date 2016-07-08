@@ -29,6 +29,7 @@ class VerifyController implements Controller {
     public function dispatch(): Message
     {
         $message = new Message();
+        
         try {
             $message->section('Attempting to setup the storage ...');
             $this->storage->setup();
