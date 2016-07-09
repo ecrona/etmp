@@ -10,7 +10,7 @@ abstract class Bootstrap {
      * Get a configuration option.
      *
      * @param  string  $key
-     * @return mixed
+     * @return void
      */
     public static function start()
     {
