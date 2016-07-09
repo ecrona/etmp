@@ -20,13 +20,13 @@ class JobService {
 
     public function setAdress(
         string $adress,
-        string $hostname,
+        string $domain,
         string $username,
         string $password
     ): string {
         $curl = new Curl(sprintf(
             $this->curlUrl,
-            $hostname,
+            $domain,
             $adress
         ));
         

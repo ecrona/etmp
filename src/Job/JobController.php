@@ -28,11 +28,11 @@ class JobController implements Controller {
         $this->jobService = $jobService;
     }
 
-    private function setAdress($adress): string
+    private function setAdress($adress, $domain): string
     {
         return $this->jobService->setAdress(
             $adress,
-            $this->config['noIpHostname'],
+            $domain,
             $this->config['noIpUsername'],
             $this->config['noIpPassword']
         );
@@ -53,9 +53,12 @@ class JobController implements Controller {
             $adress = $this->jobService->fetchAdress($this->config['fetchAdressUrl']);
 
             if ($adress !== $this->storage->read('adress')) {
-                $response = $this->setAdress($adress);
+                foreach ($this->config['noIpDomains'] as $domain) {
+                    $response = $this->setAdress($adress, $domain);
+                    $this->logger->info("{domain}\t" . $response, ['domain' => $domain]);
+                }
+
                 $this->storeAdress($adress);
-                $this->logger->info($response);
             } else {
                 $this->logger->info('No adress change');
             }

@@ -73,7 +73,7 @@ class Logger implements LoggerInterface
             'level' => $level,
         ];
 
-        $this->storage->append('logs', $date, $this->interpolate($message), $metadata);
+        $this->storage->append('logs', $date, $this->interpolate($message, $context), $metadata);
     }
 
 }

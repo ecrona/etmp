@@ -4,7 +4,7 @@ return [
     'fetchAdressUrl'      => 'http://ipecho.net/plain',
     'noIpUsername'        => '',
     'noIpPassword'        => '',
-    'noIpHostname'        => '',
+    'noIpDomains'         => [''],
     'storageAdapter'      => 'FileSystem',
     'storageDirectory'    => 'storage',
     'logPreserveDuration' => 7,
