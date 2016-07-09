@@ -6,6 +6,12 @@ use Etmp\Foundation\Config;
 use Exception;
 
 abstract class Locator {
+    /**
+     * Locates a storage adapter through a supplied configuration.
+     *
+     * @param  Etmp\Foundation\Config $config
+     * @return Etmp\Storage\Adapter
+     */
     public static function getStorage(Config $config): Adapter
     {
         $className = 'Etmp\\Storage\\Adapter\\' . $config['storageAdapter'] . '\Storage';

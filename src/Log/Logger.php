@@ -9,11 +9,23 @@ class Logger implements LoggerInterface
 {
     private $storage;
 
+    /**
+     * Supplies the storage dependency
+     *
+     * @param Etmp\Storage\Adatper $storage
+     */
     public function __construct(Storage\Adapter $storage)
     {
         $this->storage = $storage;
     }
 
+    /**
+     * Interpolates message by replacing context keys
+     *
+     * @param  string $message
+     * @param  array  $context
+     * @return string
+     */
     private function interpolate(string $message, array $context = array())
     {
         $replace = array();

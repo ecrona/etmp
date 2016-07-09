@@ -8,11 +8,21 @@ class Message {
     private $sections;
     private $selectedSection;
     
+    /**
+     * Constructs the class instance and sets up the sections base.
+     */
     public function __construct()
     {
         $this->sections = [];
     }
     
+    /**
+     * Creates a section with a selected header text and color.
+     *
+     * @param  string $header
+     * @param  int    $color  (optional)
+     * @return Etmp\Render\Message
+     */
     public function section(string $header = null, int $color = Color::Default): Message
     {
         $this->selectedSection = sizeof($this->sections);
@@ -25,6 +35,12 @@ class Message {
         return $this;
     }
     
+    /**
+     * Adds a description to a previously created section.
+     *
+     * @param  string $description
+     * @return Etmp\Render\Message
+     */
     public function description($description): Message
     {
         $this->sections[$this->selectedSection]['description'] = $description;
@@ -32,6 +48,13 @@ class Message {
         return $this;
     }
     
+    /**
+     * Renders out the message with sections and descriptions,
+     * proper sectioning, margin and spaces, including color
+     * formatting when this instance is called as a string.
+     *
+     * @return string
+     */
     public function __toString(): string
     {
         $text = '';
