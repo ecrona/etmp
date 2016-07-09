@@ -26,6 +26,11 @@ class Router {
     private $controller;
     private $factory;
     
+    /**
+     * Constructs the router and resolves the route.
+     *
+     * @param  array $arguments
+     */
     public function __construct(Array $arguments)
     {
         $this->route = sizeof($arguments) > 1 ? strtolower($arguments[1]) : '';
@@ -34,6 +39,13 @@ class Router {
         $this->resolveRoute();
     }
 
+    /**
+     * Determines if the assigned route exists as a controller
+     * or a factory in our intial route configuration, setting
+     * the controller or factory as a property.
+     *
+     * @return void
+     */
     private function resolveRoute()
     {
         if (isset($this->routes[$this->route]) || isset($this->factories[$this->route])) {
@@ -47,6 +59,12 @@ class Router {
         }
     }
     
+    /**
+     * Fetches the controller previously set depending on assigned
+     * route. Builds a factory if set, or simply returns a controller.
+     *
+     * @return Etmp\Foundation\Controller
+     */
     public function getController(): Controller
     {
         if (isset($this->factory)) {
