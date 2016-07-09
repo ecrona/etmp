@@ -1,5 +1,24 @@
 <?php
 
+/*
+    Configuration for ETMP
+
+    Settings using FileSystem Adapter
+    ---
+    'storageAdapter'      => 'FileSystem',
+    'storageDirectory'    => 'storage',
+    ---
+
+    Settings using MySQL Adapter
+    ---
+    'storageAdapter'      => 'MySQL',
+    'storageHost'         => 'localhost',
+    'storageDatabase'     => 'Database Name',
+    'storageUsername'     => 'MySQL Username',
+    'storagePassword'     => 'MySQL Password',
+    ---
+*/
+
 return [
     'fetchAdressUrl'      => 'http://ipecho.net/plain',
     'noIpUsername'        => '',
