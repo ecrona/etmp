@@ -44,7 +44,7 @@ class JobController implements Controller {
      * @param  string $domain
      * @return string
      */
-    private function setAdress($adress, $domain): string
+    private function setAdress(string $adress, string $domain): string
     {
         return $this->jobService->setAdress(
             $adress,
@@ -60,7 +60,7 @@ class JobController implements Controller {
      * @param  string $adress
      * @return void
      */
-    private function storeAdress($adress)
+    private function storeAdress(string $adress)
     {
         $this->storage->insert('adress', new DateTime(), $adress);
     }

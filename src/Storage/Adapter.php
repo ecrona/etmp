@@ -53,8 +53,15 @@ interface Adapter {
     /**
      * Cleans a table's entities.
      *
-     * @param  string   $table
+     * @param  string $table
      * @return void
      */
     public function clean(string $table);
+
+    /**
+     * Truncates the table of all rows.
+     *
+     * @param string $table
+     */
+    public function truncate(string $table);
 }

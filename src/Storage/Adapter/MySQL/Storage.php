@@ -102,4 +102,13 @@ class Storage implements Adapter {
             'days' => $days
         ]);
     }
+    
+    public function truncate(string $table)
+    {
+        $sth = $this->db->prepare('
+            TRUNCATE `' . $table . '`
+        ');
+
+        $sth->execute();
+    }
 }

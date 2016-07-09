@@ -24,7 +24,7 @@ class Config implements ArrayAccess {
      * @param  mixed  $value
      * @return void
      */
-    public function offsetSet(string $offset, $value) {
+    public function offsetSet($offset, $value) {
         if (is_null($offset)) {
             $this->container[] = $value;
         } else {
@@ -38,7 +38,7 @@ class Config implements ArrayAccess {
      * @param  string $key
      * @return bool
      */
-    public function offsetExists(string $offset): bool {
+    public function offsetExists($offset) {
         return isset($this->container[$offset]);
     }
 
@@ -48,7 +48,7 @@ class Config implements ArrayAccess {
      * @param  string $key
      * @return void
      */
-    public function offsetUnset(string $offset) {
+    public function offsetUnset($offset) {
         unset($this->container[$offset]);
     }
 
@@ -58,7 +58,7 @@ class Config implements ArrayAccess {
      * @param  string $key
      * @return mixed
      */
-    public function offsetGet(string $offset) {
+    public function offsetGet($offset) {
         return isset($this->container[$offset]) ? $this->container[$offset] : null;
     }
 }
