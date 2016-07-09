@@ -47,12 +47,14 @@ class VerifyController implements Controller {
             $adress = $this->jobService->fetchAdress($this->config['fetchAdressUrl']);
             
             $message->section('Attempting to set the external adress ...');
-            $this->jobService->setAdress(
-                $adress,
-                $this->config['noIpHostname'],
-                $this->config['noIpUsername'],
-                $this->config['noIpPassword']
-            );
+            foreach ($this->config['noIpDomains'] as $domain) {
+                $this->jobService->setAdress(
+                    $adress,
+                    $domain,
+                    $this->config['noIpUsername'],
+                    $this->config['noIpPassword']
+                );
+            }
             
             $message->section('All steps were successful', Color::Green);
         } catch (Exception $exception) {
