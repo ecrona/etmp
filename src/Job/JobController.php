@@ -15,7 +15,15 @@ class JobController implements Controller {
     private $storage;
     private $logger;
     private $jobService;
-    
+
+    /**
+     * Sets the required dependencies.
+     *
+     * @param Etmp\Foundation\Config $config
+     * @param Etmp\Storage\Adapter   $storage
+     * @param Etmp\Log\Logger        $logger
+     * @param Etmp\Job\JobService    $jobService
+     */
     public function __construct(
         Config $config,
         Storage\Adapter $storage,
@@ -28,6 +36,14 @@ class JobController implements Controller {
         $this->jobService = $jobService;
     }
 
+    /**
+     * Sets the adress of a specified domain
+     * using the job service.
+     *
+     * @param  string $adress
+     * @param  string $domain
+     * @return string
+     */
     private function setAdress($adress, $domain): string
     {
         return $this->jobService->setAdress(
@@ -38,6 +54,12 @@ class JobController implements Controller {
         );
     }
 
+    /**
+     * Stores the adress through the storage.
+     *
+     * @param  string $adress
+     * @return void
+     */
     private function storeAdress($adress)
     {
         $this->storage->insert('adress', new DateTime(), $adress);

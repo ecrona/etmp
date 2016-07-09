@@ -5,7 +5,13 @@ namespace Etmp\Help;
 use Etmp\Foundation\Controller;
 use Etmp\Render\Message;
 
-class HelpController implements Controller {    
+class HelpController implements Controller {
+    /**
+     * Add the header sections
+     *
+     * @param  Etmp\Render\Message $message
+     * @return void
+     */
     private function addHeader(Message $message)
     {
         $message
@@ -13,6 +19,12 @@ class HelpController implements Controller {
             ->section('Usage: php index.php [action] [options]');
     }
     
+    /**
+     * Add the action part of the message
+     *
+     * @param  Etmp\Render\Message $message
+     * @return void
+     */
     private function addActions(Message $message)
     {
         $message
@@ -23,7 +35,13 @@ class HelpController implements Controller {
                 ['verify', 'Lets you verify configuration and test storage'],
             ]);
     }
-    
+
+    /**
+     * Add the header sections
+     *
+     * @param  Etmp\Render\Message $message
+     * @return void
+     */
     private function addOptions(Message $message)
     {
         $message
